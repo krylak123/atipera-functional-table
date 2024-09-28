@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [],
-  template: `
-    <h1>Welcome to {{title}}!</h1>
-
-    
-  `,
-  styles: [],
+  templateUrl: `./app.component.html`,
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'atipera-functional-table';
