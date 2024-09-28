@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit, inject } from '@angular/core';
+import { DataAccessService } from '@data-access';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +8,12 @@ import { Component } from '@angular/core';
   templateUrl: `./app.component.html`,
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'atipera-functional-table';
+export class AppComponent implements OnInit {
+  dataAccessService: DataAccessService = inject(DataAccessService);
+
+  ngOnInit(): void {
+    console.log('init');
+
+    this.dataAccessService.getPeriodsList().subscribe(data => console.log(data));
+  }
 }
