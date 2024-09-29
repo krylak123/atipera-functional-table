@@ -1,11 +1,13 @@
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatMiniFabButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { PeriodicElement } from '@data-access';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
 
 import { inputDebounceTime } from './app.constants';
@@ -13,7 +15,7 @@ import { inputDebounceTime } from './app.constants';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MatDivider, MatInput, MatTableModule, MatFormFieldModule, ReactiveFormsModule, MatIcon],
+  imports: [MatDivider, MatInput, MatTableModule, MatFormFieldModule, ReactiveFormsModule, MatIcon, MatMiniFabButton],
   templateUrl: `./app.component.html`,
   styleUrl: './app.component.scss',
 })
@@ -22,8 +24,8 @@ export class AppComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
 
   filterFormControl = this.#fb.control<string>('');
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource([
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'actions'];
+  dataSource = new MatTableDataSource<PeriodicElement>([
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
     { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
@@ -38,6 +40,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.#handleFilterFormControl();
+  }
+
+  handleTableRowEditBtnClick(item: PeriodicElement): void {
+    console.log(item);
   }
 
   #handleFilterFormControl(): void {
