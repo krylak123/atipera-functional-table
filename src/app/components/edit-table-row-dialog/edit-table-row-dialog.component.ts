@@ -35,7 +35,15 @@ interface IPeriodicFormGroup {
 })
 export class EditTableRowDialogComponent {
   readonly data: IPeriodicElement = inject(MAT_DIALOG_DATA);
-  readonly #matDialogRef = inject(MatDialogRef<EditTableRowDialogComponent>);
+  readonly #matDialogRef = inject(
+    MatDialogRef<
+      EditTableRowDialogComponent,
+      {
+        itemToUpdate: IPeriodicElement;
+        updatedItem: IPeriodicElement;
+      }
+    >
+  );
   readonly #fb = inject(NonNullableFormBuilder);
 
   periodicFormGroup: FormGroup<IPeriodicFormGroup> = this.#fb.group<IPeriodicFormGroup>({
@@ -51,6 +59,9 @@ export class EditTableRowDialogComponent {
   }
 
   handleFormSubmit(): void {
-    this.#matDialogRef.close(this.periodicFormGroup.value);
+    this.#matDialogRef.close({
+      itemToUpdate: this.initialPeriodicFormGroupData,
+      updatedItem: this.periodicFormGroup.value,
+    });
   }
 }

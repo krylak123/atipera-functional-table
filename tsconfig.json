@@ -23,7 +23,8 @@
     "lib": ["ES2022", "dom"],
     "paths": {
       "@data-access": ["src/app/data-access/index.ts"],
-      "@components": ["src/app/components/index.ts"]
+      "@components": ["src/app/components/index.ts"],
+      "@states": ["src/app/states/index.ts"]
     }
   },
   "angularCompilerOptions": {

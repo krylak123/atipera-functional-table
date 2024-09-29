@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <app-periodic-table
-      [dataSource]="dataSource"
+      [dataSource]="dataSource()"
       [filteredInputValue]="filterFormControl.value"
       (editBtnClick)="handleTableRowEditBtnClick($event)" />
   </section>
