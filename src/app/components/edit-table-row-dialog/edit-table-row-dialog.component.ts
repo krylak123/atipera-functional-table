@@ -35,6 +35,7 @@ interface IPeriodicFormGroup {
 })
 export class EditTableRowDialogComponent {
   readonly data: IPeriodicElement = inject(MAT_DIALOG_DATA);
+  readonly #fb = inject(NonNullableFormBuilder);
   readonly #matDialogRef = inject(
     MatDialogRef<
       EditTableRowDialogComponent,
@@ -44,7 +45,6 @@ export class EditTableRowDialogComponent {
       }
     >
   );
-  readonly #fb = inject(NonNullableFormBuilder);
 
   periodicFormGroup: FormGroup<IPeriodicFormGroup> = this.#fb.group<IPeriodicFormGroup>({
     position: this.#fb.control(this.data.position, [Validators.required]),
