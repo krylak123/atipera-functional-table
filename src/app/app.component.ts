@@ -59,9 +59,10 @@ export class AppComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(resultData => !!resultData),
-        tap(({ itemToUpdate, updatedItem }) =>
-          this.#periodicListStateService.updateListElement(itemToUpdate, updatedItem)
-        ),
+        tap(({ itemToUpdate, updatedItem }) => {
+          this.#periodicListStateService.updateListElement(itemToUpdate, updatedItem);
+          this.filterFormControl.reset();
+        }),
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe();
