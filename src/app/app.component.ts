@@ -7,8 +7,8 @@ import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { EditTableRowDialogComponent } from '@components';
+import { MatTableDataSource } from '@angular/material/table';
+import { EditTableRowDialogComponent, PeriodicTableComponent } from '@components';
 import { IPeriodicElement } from '@data-access';
 import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs';
 
@@ -17,7 +17,15 @@ import { inputDebounceTime } from './app.constants';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MatDivider, MatInput, MatTableModule, MatFormFieldModule, ReactiveFormsModule, MatIcon, MatMiniFabButton],
+  imports: [
+    MatDivider,
+    MatInput,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatIcon,
+    MatMiniFabButton,
+    PeriodicTableComponent,
+  ],
   templateUrl: `./app.component.html`,
   styleUrl: './app.component.scss',
 })
@@ -27,7 +35,6 @@ export class AppComponent implements OnInit {
   readonly #matDialog = inject(MatDialog);
 
   filterFormControl = this.#fb.control<string>('');
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'actions'];
   dataSource = new MatTableDataSource<IPeriodicElement>([
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
