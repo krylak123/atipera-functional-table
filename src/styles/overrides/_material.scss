@@ -8,6 +8,10 @@ mat-form-field {
   width: 100%;
 }
 
+mat-label {
+  text-transform: capitalize;
+}
+
 //MatTableModule
 .mat-mdc-row {
   transition: 0.2s;

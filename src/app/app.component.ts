@@ -2,13 +2,15 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { PeriodicElement } from '@data-access';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs';
+import { EditTableRowDialogComponent } from '@components';
+import { IPeriodicElement } from '@data-access';
+import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs';
 
 import { inputDebounceTime } from './app.constants';
 
@@ -20,12 +22,13 @@ import { inputDebounceTime } from './app.constants';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  #fb = inject(NonNullableFormBuilder);
-  #destroyRef = inject(DestroyRef);
+  readonly #fb = inject(NonNullableFormBuilder);
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #matDialog = inject(MatDialog);
 
   filterFormControl = this.#fb.control<string>('');
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>([
+  dataSource = new MatTableDataSource<IPeriodicElement>([
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
     { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
     { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
@@ -42,8 +45,20 @@ export class AppComponent implements OnInit {
     this.#handleFilterFormControl();
   }
 
-  handleTableRowEditBtnClick(item: PeriodicElement): void {
-    console.log(item);
+  handleTableRowEditBtnClick(data: IPeriodicElement): void {
+    this.#matDialog
+      .open<EditTableRowDialogComponent, IPeriodicElement, IPeriodicElement>(EditTableRowDialogComponent, {
+        data,
+      })
+      .afterClosed()
+      .pipe(
+        filter(isUpdated => !!isUpdated),
+        tap(updatedData => {
+          console.log(updatedData);
+        }),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe();
   }
 
   #handleFilterFormControl(): void {
